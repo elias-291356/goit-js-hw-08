@@ -1,7 +1,7 @@
 import localStorageService from "./localStorage";
 const _ = require('lodash');
 const formEl = document.querySelector(".feedback-form");
-const userData = {};
+let userData = {};
 
 const fillContactFormFields = () => {
   const userDataFromLs = localStorageService.load('feedback-form-state');
@@ -19,7 +19,7 @@ const fillContactFormFields = () => {
       formEl.elements[key].value = userDataFromLs[key];
     }
   }
-
+  userData = userDataFromLs;
 };
 fillContactFormFields();
 
@@ -40,7 +40,7 @@ const onformElElSubmit = event => {
 
   localStorageService.remove("feedback-form-state",)
   // localStorage.removeItem("feedback-form-state");
-
+  userData = {};
 }
 
 
@@ -53,6 +53,7 @@ formEl.addEventListener('input', _.throttle(event => {
   const value = formEl.value;
   const name = formEl.name;
   userData[name] = value;
-  localStorageService.save('feedback-form-state', userData);
+  localStorageService.save('feedback-form-state',)
 }, 500)
+
 );
