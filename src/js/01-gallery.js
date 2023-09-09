@@ -24,3 +24,6 @@ let gallery = new SimpleLightbox('.gallery a', {
 })
 
 
+
+
+

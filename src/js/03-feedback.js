@@ -5,16 +5,11 @@ let userData = {};
 
 const fillContactFormFields = () => {
   const userDataFromLs = localStorageService.load('feedback-form-state');
-  // const userDataFromLs = JSON.parse(localStorage.getItem('feedback-form-state'));
-  console.log(userDataFromLs);
-
   if (userDataFromLs === undefined) {
     return;
   }
-  console.log(userDataFromLs);
   console.log(formEl.elements);
-
-  for (const key in userDataFromLs) {
+  for (const key of Object.keys(userDataFromLs)) {
     if (userDataFromLs.hasOwnProperty(key)) {
       formEl.elements[key].value = userDataFromLs[key];
     }
@@ -23,37 +18,29 @@ const fillContactFormFields = () => {
 };
 fillContactFormFields();
 
-const onFormElFieldChange = event => {
-  const { target: FormElFieldChange } = event;
-
-  const value = FormElFieldChange.value;
-  const name = FormElFieldChange.name;
-  userData[name] = value;
-
-  localStorageService.save("feedback-form-state", userData);
-  // localStorage.setItem("feedback-form-state", JSON.stringify(userData));
-}
-
 const onformElElSubmit = event => {
   event.preventDefault();
   event.target.reset();
-
   localStorageService.remove("feedback-form-state",)
-  // localStorage.removeItem("feedback-form-state");
+  console.log(userData);
   userData = {};
 }
-
-
-
-formEl.addEventListener('change', onFormElFieldChange);
+formEl.addEventListener(
+  'input',
+  _.throttle(event => {
+    const { target: contactFormElement } = event;
+    const name = contactFormElement.name;
+    const value = contactFormElement.value;
+    userData[name] = value;
+    localStorageService.save('feedback-form-state', userData);
+  }, 500)
+);
 formEl.addEventListener('submit', onformElElSubmit);
 
-formEl.addEventListener('input', _.throttle(event => {
-  const { target: formEl } = event;
-  const value = formEl.value;
-  const name = formEl.name;
-  userData[name] = value;
-  localStorageService.save('feedback-form-state',)
-}, 500)
 
-);
+
+
+
+
+
+
